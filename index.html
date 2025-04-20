@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>しもいぬれいな</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: sans-serif;
+      margin-top: 80px;
+    }
+    .char {
+      display: inline-block;
+      font-size: 48px;
+      width: 50px;
+      margin: 0 5px;
+      border-bottom: 2px solid #000;
+    }
+    #startButton {
+      margin-top: 40px;
+      font-size: 24px;
+      padding: 10px 30px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>しもいぬれいな</h1>
+  <div id="nameContainer">
+    <span class="char" id="c0">？</span>
+    <span class="char" id="c1">？</span>
+    <span class="char" id="c2">？</span>
+    <span class="char" id="c3">？</span>
+    <span class="char" id="c4">？</span>
+    <span class="char" id="c5">？</span>
+    <span class="char" id="c6">？</span>
+  </div>
+  <br>
+  <button id="startButton">スタート</button>
+
+  <script>
+    const baseChars = ["し", "も", "い", "ぬ", "れ", "い", "な"];
+    const charElements = [];
+    const intervals = [];
+
+    for (let i = 0; i < 7; i++) {
+      charElements[i] = document.getElementById(`c${i}`);
+    }
+
+    document.getElementById('startButton').addEventListener('click', async () => {
+      document.getElementById('startButton').disabled = true;
+
+      for (let i = 0; i < 7; i++) {
+        await delay(100);
+        intervals[i] = startSpinning(i);
+      }
+
+      await delay(1000);
+
+      for (let i = 0; i < 7; i++) {
+        await delay(200);
+        stopSpinning(i);
+      }
+
+      document.getElementById('startButton').disabled = false;
+    });
+
+    function startSpinning(index) {
+      return setInterval(() => {
+        const randomChar = baseChars[Math.floor(Math.random() * baseChars.length)];
+        charElements[index].textContent = randomChar;
+      }, 30);
+    }
+
+    function stopSpinning(index) {
+      clearInterval(intervals[index]);
+    }
+
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+  </script>
+</body>
+</html>
